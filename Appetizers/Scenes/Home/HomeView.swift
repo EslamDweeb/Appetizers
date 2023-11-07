@@ -14,13 +14,23 @@ struct HomeView: View {
             NavigationView{
                 List(viewModel.appetizersList) { appetizer in
                     AppetizerRow(appetizer: appetizer)
+                        .listRowSeparator(.hidden)
+                        .onTapGesture {
+                            viewModel.selectedAppetizer = appetizer
+                            viewModel.isShowingDetailView.toggle()
+                        }
                 }
+                .listStyle(.plain)
                 .navigationTitle("Appetizers")
+                .disabled(viewModel.isShowingDetailView)
             }
             .onAppear{
                 viewModel.getAppetizers()
             }
-            
+            .blur(radius: viewModel.isShowingDetailView ? 20:0)
+            if viewModel.isShowingDetailView {
+                ItemDetailView(appetizer: viewModel.selectedAppetizer ?? MockData.sampleAppetizer, isShowingDetailView: $viewModel.isShowingDetailView)
+            }
             if viewModel.isLoading {
                 LoadingView()
             }

@@ -8,23 +8,17 @@
 import SwiftUI
 
 struct MainTabBarView: View {
+    @EnvironmentObject var order:Order
     var body: some View {
         TabView {
             HomeView()
-                .tabItem {
-                    Image(systemName: "house")
-                    Text("Home")
-                }
+                .tabItem { Label("Home", systemImage: "house") }
             AccountView()
-                .tabItem {
-                    Image(systemName: "person")
-                    Text("Account")
-                }
+                .tabItem { Label("Account", systemImage: "person") }
+                
             OrderView()
-                .tabItem {
-                    Image(systemName: "bag")
-                    Text("Order")
-                }
+                .tabItem { Label("Order", systemImage: "bag") }
+                .badge(order.count)
         }
         .tint(.brandPrimary)
     }
@@ -32,6 +26,6 @@ struct MainTabBarView: View {
 
 struct MainTabBarView_Previews: PreviewProvider {
     static var previews: some View {
-        MainTabBarView()
+        MainTabBarView().environmentObject(Order())
     }
 }
